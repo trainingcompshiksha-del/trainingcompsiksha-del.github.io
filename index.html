@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compshiksha InfoTech — Hardware, Networking & Cloud Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#E5E9F1;
+    --bg-alt:#DEE3EC;
+    --surface:#E5E9F1;
+    --surface-2:#DCE2EC;
+    --shadow-light:#FFFFFF;
+    --shadow-dark:#AEB8CC;
+    --copper:#5B5FEF;
+    --copper-bright:#4448D8;
+    --signal:#0FAF9F;
+    --text:#262B3A;
+    --muted:#5B6478;
+    --muted-2:#828BA0;
+    --line:rgba(38,43,58,0.09);
+    --bg-rgb:229,233,241;
+    color-scheme:light;
+  }
+  html[data-theme="dark"]{
+    --bg:#242832;
+    --bg-alt:#1E222B;
+    --surface:#242832;
+    --surface-2:#2A2F3B;
+    --shadow-light:#323A49;
+    --shadow-dark:#14171D;
+    --copper:#8B8FFF;
+    --copper-bright:#A6A9FF;
+    --signal:#33E1CC;
+    --text:#E7EAF2;
+    --muted:#9BA4B8;
+    --muted-2:#6E7688;
+    --line:rgba(255,255,255,0.07);
+    --bg-rgb:36,40,50;
+    color-scheme:dark;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+    transition:background-color .25s ease, color .25s ease;
+  }
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  @media(max-width:640px){.wrap{padding:0 20px;}}
+
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image:radial-gradient(var(--shadow-dark) 1px, transparent 1px);
+    background-size:26px 26px;
+    opacity:0.18;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .n-raised{ box-shadow:8px 8px 18px var(--shadow-dark), -8px -8px 18px var(--shadow-light); }
+  .n-raised-sm{ box-shadow:5px 5px 11px var(--shadow-dark), -5px -5px 11px var(--shadow-light); }
+  .n-pressed{ box-shadow:inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); }
+
+  header{position:sticky;top:0;z-index:50;padding:14px 20px 0;}
+  .nav-shell{
+    max-width:1180px;margin:0 auto;
+    background:var(--surface);
+    border-radius:16px;
+    overflow:visible;
+    box-shadow:7px 7px 16px var(--shadow-dark), -7px -7px 16px var(--shadow-light);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 20px;position:relative;
+  }
+  .logo{display:flex;align-items:center;gap:10px;}
+  .term-dots{display:flex;gap:6px;}
+  .term-dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .term-dots .red{background:#FF5F57;}
+  .term-dots .yellow{background:#FEBC2E;}
+  .term-dots .green{background:#28C840;}
+  .prompt-brand{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14.5px;font-weight:500;
+    color:var(--text);
+    white-space:nowrap;
+  }
+  .prompt-brand .at{color:var(--muted-2);}
+  .prompt-brand .host{color:var(--copper-bright);}
+  .prompt-brand .cursor{
+    display:inline-block;width:7px;height:14px;margin-left:2px;
+    background:var(--signal);vertical-align:-2px;
+    animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  .nav-links{display:flex;gap:8px;align-items:center;}
+  .nav-links a{
+    font-size:13.5px;color:var(--muted);
+    padding:8px 14px;border-radius:10px;
+    transition:color .2s ease, box-shadow .2s ease;
+  }
+  .nav-links a:hover{color:var(--text);box-shadow:inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);}
+  .nav-cta{
+    background:var(--copper);
+    color:#fff;
+    padding:10px 20px;
+    border-radius:11px;
+    font-weight:600;
+    font-size:13.5px;
+    box-shadow:5px 5px 12px rgba(91,95,239,0.35), -4px -4px 10px var(--shadow-light);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .nav-cta:hover{transform:translateY(-1px);box-shadow:6px 6px 14px rgba(91,95,239,0.45), -4px -4px 10px var(--shadow-light);}
+  .nav-controls{display:flex;align-items:center;gap:10px;}
+  .theme-toggle, .nav-toggle{
+    width:38px;height:38px;flex-shrink:0;
+    border:none;border-radius:11px;
+    background:var(--surface);
+    color:var(--text);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    box-shadow:5px 5px 11px var(--shadow-dark), -5px -5px 11px var(--shadow-light);
+    transition:box-shadow .2s ease, transform .2s ease;
+  }
+  .theme-toggle:hover, .nav-toggle:hover{transform:translateY(-1px);}
+  .theme-toggle:active, .nav-toggle:active{box-shadow:inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);}
+  .theme-toggle svg{width:17px;height:17px;}
+  .nav-toggle{display:none;font-size:19px;background:var(--surface);}
+  @media(max-width:900px){
+    .nav-links{
+      position:absolute;top:calc(100% + 10px);left:20px;right:20px;
+      flex-direction:column;align-items:stretch;
+      background:var(--surface);
+      border-radius:16px;
+      padding:14px;gap:6px;
+      box-shadow:8px 8px 18px var(--shadow-dark), -8px -8px 18px var(--shadow-light);
+      display:none;
+    }
+    .nav-links.open{display:flex;}
+    .nav-links a{padding:12px 14px;}
+    .nav-toggle{display:flex;}
+  }
+
+  .hero{position:relative;z-index:1;padding:64px 0 76px;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;letter-spacing:0.07em;text-transform:uppercase;
+    color:var(--signal);
+    padding:8px 14px;border-radius:11px;
+    margin-bottom:24px;
+    box-shadow:inset 3px 3px 7px var(--shadow-dark), inset -3px -3px 7px var(--shadow-light);
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--signal);box-shadow:0 0 8px var(--signal);}
+  .hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.1;margin-bottom:20px;}
+  .hero h1 span{color:var(--copper-bright);}
+  .hero p.lead{color:var(--muted);font-size:16.5px;max-width:500px;margin-bottom:30px;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:38px;}
+  .btn-primary{
+    background:var(--copper);color:#fff;font-weight:600;
+    padding:14px 26px;border-radius:13px;font-size:14.5px;
+    box-shadow:6px 6px 14px rgba(91,95,239,0.35), -5px -5px 12px var(--shadow-light);
+    transition:transform .2s ease, box-shadow .2s ease;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{
+    background:var(--surface);color:var(--text);
+    padding:14px 26px;border-radius:13px;font-size:14.5px;font-weight:500;
+    box-shadow:5px 5px 11px var(--shadow-dark), -5px -5px 11px var(--shadow-light);
+    transition:transform .2s ease;
+  }
+  .btn-ghost:hover{transform:translateY(-2px);}
+  .hero-stats{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-stats div{
+    padding:12px 18px;border-radius:13px;
+    box-shadow:inset 3px 3px 7px var(--shadow-dark), inset -3px -3px 7px var(--shadow-light);
+  }
+  .hero-stats strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:21px;color:var(--copper-bright);}
+  .hero-stats span{font-size:11px;color:var(--muted-2);font-family:'IBM Plex Mono',monospace;}
+
+  .terminal{
+    border-radius:16px;
+    background:var(--surface);
+    box-shadow:10px 10px 22px var(--shadow-dark), -10px -10px 22px var(--shadow-light);
+    overflow:hidden;
+  }
+  .terminal-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:13px 16px;
+    background:var(--surface-2);
+  }
+  .terminal-bar .dot{width:11px;height:11px;border-radius:50%;}
+  .terminal-bar .red{background:#FF5F57;}
+  .terminal-bar .yellow{background:#FEBC2E;}
+  .terminal-bar .green{background:#28C840;}
+  .terminal-title{margin-left:6px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted-2);}
+  .terminal-body{
+    padding:24px 22px 28px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    line-height:1.95;
+  }
+  .terminal-body .ln{opacity:0;transform:translateY(6px);animation:tl-in .5s ease forwards;}
+  .terminal-body .ln:nth-child(1){animation-delay:.15s;}
+  .terminal-body .ln:nth-child(2){animation-delay:.5s;}
+  .terminal-body .ln:nth-child(3){animation-delay:.95s;}
+  .terminal-body .ln:nth-child(4){animation-delay:1.25s;}
+  .terminal-body .ln:nth-child(5){animation-delay:1.45s;}
+  .terminal-body .ln:nth-child(6){animation-delay:1.9s;}
+  .terminal-body .ln:nth-child(7){animation-delay:2.25s;}
+  .terminal-body .ln:nth-child(8){animation-delay:2.6s;}
+  @keyframes tl-in{ to{opacity:1;transform:translateY(0);} }
+  @media (prefers-reduced-motion: reduce){ .terminal-body .ln{ animation:none; opacity:1; transform:none; } }
+  .terminal-body .usr{color:var(--signal);}
+  .terminal-body .sep{color:var(--muted-2);}
+  .terminal-body .path{color:var(--copper-bright);}
+  .terminal-body .out{color:var(--muted);}
+  .term-cursor{
+    display:inline-block;width:7px;height:14px;
+    background:var(--copper-bright);vertical-align:-2px;
+    animation:blink 1s steps(1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce){ .term-cursor{ animation:none; } }
+
+  .strip{padding:20px 0;overflow:hidden;white-space:nowrap;position:relative;z-index:1;}
+  .strip-track{display:inline-flex;gap:14px;animation:scroll 30s linear infinite;}
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  @media (prefers-reduced-motion: reduce){ .strip-track{ animation:none; } }
+  .chip{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);
+    padding:9px 16px;border-radius:11px;
+    box-shadow:inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+  }
+
+  section{position:relative;z-index:1;padding:78px 0;}
+  .section-head{max-width:620px;margin-bottom:48px;}
+  .section-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.07em;text-transform:uppercase;
+    color:var(--copper-bright);margin-bottom:12px;display:block;
+  }
+  .section-head h2{font-size:clamp(24px,3.2vw,36px);}
+  .section-head p{color:var(--muted);margin-top:14px;font-size:15px;}
+
+  .course-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media(max-width:900px){.course-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:640px){.course-grid{grid-template-columns:1fr;}}
+  .course-card{
+    background:var(--surface);
+    border-radius:18px;
+    padding:28px 24px;
+    box-shadow:7px 7px 16px var(--shadow-dark), -7px -7px 16px var(--shadow-light);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .course-card:hover{transform:translateY(-4px);}
+  .course-code{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--signal);
+    padding:5px 11px;border-radius:8px;
+    margin-bottom:16px;
+    box-shadow:inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+  }
+  .course-card h3{font-size:18px;margin-bottom:10px;}
+  .course-card p{font-size:13.5px;color:var(--muted);margin-bottom:18px;min-height:66px;}
+  .course-meta{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-top:14px;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted-2);
+    border-top:1px solid var(--line);
+  }
+  .course-meta a{color:var(--copper-bright);font-weight:600;}
+
+  .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  @media(max-width:900px){.why-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.why-grid{grid-template-columns:1fr;}}
+  .why-card{
+    background:var(--surface);
+    border-radius:16px;
+    padding:26px 22px;
+    box-shadow:6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+  }
+  .why-num{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;color:var(--copper-bright);font-size:11px;
+    width:30px;height:30px;border-radius:9px;text-align:center;line-height:30px;
+    margin-bottom:14px;
+    box-shadow:inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+  }
+  .why-card h4{font-size:16px;margin-bottom:8px;}
+  .why-card p{font-size:13px;color:var(--muted);}
+
+  .path{background:var(--bg-alt);}
+  .path-row{display:grid;grid-template-columns:100px 1fr;gap:22px;padding:20px 0;border-bottom:1px solid var(--line);}
+  .path-row:last-child{border-bottom:none;}
+  .path-time{font-family:'IBM Plex Mono',monospace;color:var(--muted-2);font-size:12.5px;padding-top:2px;}
+  .path-body h4{font-size:15.5px;margin-bottom:6px;}
+  .path-body p{font-size:13.5px;color:var(--muted);max-width:600px;}
+
+  .band{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  @media(max-width:760px){.band{grid-template-columns:repeat(2,1fr);}}
+  .band-cell{
+    background:var(--surface);
+    border-radius:16px;
+    padding:30px 18px;text-align:center;
+    box-shadow:6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+  }
+  .band-cell strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:28px;color:var(--copper-bright);}
+  .band-cell span{font-size:11.5px;color:var(--muted-2);font-family:'IBM Plex Mono',monospace;}
+
+  .cta-box{
+    display:grid;grid-template-columns:1.1fr 0.9fr;gap:50px;
+    background:var(--surface);
+    border-radius:22px;
+    padding:48px;
+    box-shadow:10px 10px 22px var(--shadow-dark), -10px -10px 22px var(--shadow-light);
+  }
+  @media(max-width:860px){.cta-box{grid-template-columns:1fr;padding:32px 24px;}}
+  .cta-box h2{font-size:clamp(22px,3vw,30px);margin-bottom:14px;}
+  .cta-box p{color:var(--muted);font-size:14.5px;margin-bottom:26px;max-width:440px;}
+  form{display:flex;flex-direction:column;gap:14px;}
+  .form-row{display:flex;gap:14px;}
+  @media(max-width:520px){.form-row{flex-direction:column;}}
+  input, select{
+    background:var(--surface);
+    border:none;
+    color:var(--text);
+    padding:14px 16px;
+    border-radius:12px;
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:14px;
+    width:100%;
+    box-shadow:inset 4px 4px 9px var(--shadow-dark), inset -4px -4px 9px var(--shadow-light);
+  }
+  input::placeholder{color:var(--muted-2);}
+  input:focus, select:focus{outline:2px solid var(--signal);outline-offset:1px;}
+  form button{
+    background:var(--copper);color:#fff;font-weight:600;
+    padding:14px 22px;border:none;border-radius:12px;font-size:14.5px;cursor:pointer;
+    box-shadow:6px 6px 14px rgba(91,95,239,0.35), -5px -5px 12px var(--shadow-light);
+    transition:transform .2s ease;
+    margin-top:4px;
+  }
+  form button:hover{transform:translateY(-2px);}
+  .contact-info{display:flex;flex-direction:column;gap:16px;justify-content:center;}
+  .contact-info .ci-item{
+    padding:14px 16px;border-radius:12px;
+    box-shadow:inset 3px 3px 7px var(--shadow-dark), inset -3px -3px 7px var(--shadow-light);
+  }
+  .contact-info .ci-item span{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--signal);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;}
+  .contact-info .ci-item strong{font-size:14px;font-weight:500;line-height:1.5;}
+
+  footer{padding:48px 0 30px;position:relative;z-index:1;}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px;}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr;}}
+  .foot-grid h5{font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted-2);margin-bottom:14px;}
+  .foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .foot-grid a{color:var(--muted);font-size:13.5px;}
+  .foot-grid a:hover{color:var(--signal);}
+  .foot-bottom{
+    padding-top:22px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:12px;color:var(--muted-2);
+    font-family:'IBM Plex Mono',monospace;
+  }
+
+  .wa-float{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;align-items:center;}
+  .wa-btn{
+    width:58px;height:58px;
+    background:#25D366;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:6px 6px 16px rgba(0,0,0,0.28), -4px -4px 12px var(--shadow-light), 0 0 0 0 rgba(37,211,102,0.6);
+    cursor:pointer;
+    animation:wa-pulse 2.6s ease-out infinite;
+    transition:transform .2s ease;
+  }
+  .wa-btn:hover{transform:scale(1.06);}
+  @keyframes wa-pulse{
+    0%{ box-shadow:6px 6px 16px rgba(0,0,0,0.28), -4px -4px 12px var(--shadow-light), 0 0 0 0 rgba(37,211,102,0.55); }
+    70%{ box-shadow:6px 6px 16px rgba(0,0,0,0.28), -4px -4px 12px var(--shadow-light), 0 0 0 14px rgba(37,211,102,0); }
+    100%{ box-shadow:6px 6px 16px rgba(0,0,0,0.28), -4px -4px 12px var(--shadow-light), 0 0 0 0 rgba(37,211,102,0); }
+  }
+  @media (prefers-reduced-motion: reduce){ .wa-btn{ animation:none; } }
+  .wa-tooltip{
+    position:absolute;right:70px;
+    background:var(--surface);color:var(--text);
+    padding:9px 14px;border-radius:11px;
+    font-size:13px;white-space:nowrap;
+    box-shadow:5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light);
+    opacity:0;transform:translateX(6px);pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .wa-float:hover .wa-tooltip{opacity:1;transform:translateX(0);}
+
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+  @media(max-width:900px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media(max-width:640px){
+    .gallery-grid{grid-template-columns:1fr;}
+  }
+  .gallery-item{
+    overflow:hidden;
+    border-radius:18px;
+    background:var(--surface);
+    box-shadow:7px 7px 16px var(--shadow-dark), -7px -7px 16px var(--shadow-light);
+  }
+  .gallery-item img{
+    width:100%;
+    height:260px;
+    object-fit:cover;
+    transition:transform .35s ease;
+  }
+  .gallery-item:hover img{
+    transform:scale(1.05);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-shell">
+    <nav>
+      <a href="#top" class="logo">
+        <span class="term-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></span>
+        <span class="prompt-brand">compshiksha<span class="at">@</span><span class="host">infotech</span><span class="sep">:~$</span><span class="cursor"></span></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#courses">Courses</a>
+        <a href="#path">Learning Path</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#why">Why Us</a>
+        <a href="it-support.html">IT Support</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" class="nav-cta">Book Free Demo</a>
+      </div>
+      <div class="nav-controls">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>Admissions open — Pune Batch, August 2026</span>
+        <h1>Learn the hardware, the network,<br> and the <span>cloud</span> behind every system.</h1>
+        <p class="lead">Hands-on training in computer hardware, networking, Linux administration, ethical hacking and cloud platforms — taught on real racks, real routers, and real cloud consoles, not slides.</p>
+        <div class="hero-actions">
+          <a href="#courses" class="btn-primary">Explore Courses →</a>
+          <a href="#contact" class="btn-ghost">Talk to a Counsellor</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>9</strong><span>CERTIFICATION TRACKS</span></div>
+          <div><strong>2,400+</strong><span>STUDENTS TRAINED</span></div>
+          <div><strong>92%</strong><span>PLACEMENT RATE</span></div>
+        </div>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-bar">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="terminal-title">enroll.sh — compshiksha</span>
+        </div>
+        <div class="terminal-body">
+          <div class="ln"><span class="usr">visitor@compshiksha</span><span class="sep">:~$</span> whoami</div>
+          <div class="ln out">&gt; future_network_engineer</div>
+          <div class="ln">&nbsp;</div>
+          <div class="ln"><span class="usr">visitor@compshiksha</span><span class="sep">:~$</span> ls <span class="path">./courses</span></div>
+          <div class="ln out">hardware-networking&nbsp;&nbsp;ccna&nbsp;&nbsp;rhel&nbsp;&nbsp;centos</div>
+          <div class="ln out">ubuntu&nbsp;&nbsp;ethical-hacking&nbsp;&nbsp;cloud-computing&nbsp;&nbsp;aws&nbsp;&nbsp;azure</div>
+          <div class="ln"><span class="usr">visitor@compshiksha</span><span class="sep">:~$</span> ./<span class="path">enroll.sh</span> --batch=pune-aug-2026</div>
+          <div class="ln out">Admissions open · 15 seats/batch · loading brochure... done ✓</div>
+          <div class="ln"><span class="usr">visitor@compshiksha</span><span class="sep">:~$</span> <span class="term-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRIP -->
+  <div class="strip">
+    <div class="strip-track">
+      <span class="chip">CCNA 200-301</span><span class="chip">RHEL EX200</span><span class="chip">CENTOS ADMIN</span><span class="chip">UBUNTU SERVER</span><span class="chip">ETHICAL HACKING</span><span class="chip">AWS SOLUTIONS ARCHITECT</span><span class="chip">MICROSOFT AZURE AZ-104</span><span class="chip">COMPUTER HARDWARE &amp; NETWORKING</span>
+      <span class="chip">CCNA 200-301</span><span class="chip">RHEL EX200</span><span class="chip">CENTOS ADMIN</span><span class="chip">UBUNTU SERVER</span><span class="chip">ETHICAL HACKING</span><span class="chip">AWS SOLUTIONS ARCHITECT</span><span class="chip">MICROSOFT AZURE AZ-104</span><span class="chip">COMPUTER HARDWARE &amp; NETWORKING</span>
+    </div>
+  </div>
+
+  <!-- COURSES -->
+  <section id="courses">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-tag">/// Course Catalogue</span>
+        <h2>Nine tracks, one workshop floor.</h2>
+        <p>Every course runs on physical machines and live cloud accounts — from cracking open a cabinet to configuring a VPC.</p>
+      </div>
+
+      <div class="course-grid">
+        <div class="course-card">
+          <span class="course-code">HN-101</span>
+          <h3>Computer Hardware &amp; Networking</h3>
+          <p>Assembling and troubleshooting PCs, motherboards, storage and peripherals, plus structured cabling and LAN setup.</p>
+          <div class="course-meta"><span>3 Months</span><a href="#contact">Enquire →</a></div>
+        </div>
+        <div class="course-card">
+          <span class="course-code">CCNA-200-301</span>
+          <h3>CCNA — Cisco Certified Network Associate</h3>
+          <p>Routing, switching, VLANs, OSPF and network security fundamentals on real Cisco gear and Packet Tracer labs.</p>
+          <div class="course-meta"><span>4 Months</span><a href="#contact">Enquire →</a></div>
+        </div>
+        <div class="course-card">
+          <span class="course-code">RHEL-EX200</span>
+          <h3>RHEL — Red Hat Enterprise Linux</h3>
+          <p>System administration, shell scripting, user and storage management, preparing you for the RHCSA exam.</p>
+          <div class="course-meta"><span>2.5 Months</span><a href="#contact">Enquire →</a></div>
+        </div>
+        <div class="course-card">
+          <span class="course-code">CENTOS-201</span>
+          <h3>CentOS Server Administration</h3>
+          <p>Package management, service configuration, firewall and web/mail server deployment on CentOS environments.</p>
+          <div class="course-meta"><span>2 Months</span><a href="#contact">Enquire →</a></div>
+        </div>
+        <div class="course-card">
+          <span class="course-code">UBT-301</span>
+          <h3>Ubuntu Server Administration</h3>
+          <p>Installing, securing and maintaining Ubuntu servers — networking, containers and automated deployments.</p>
+          <div class="course-meta"><span>2 Months</span><a href="#contact">Enquire →</a></div>
+        </div>
+        <div class="course-card">
+          <span class="course-code">EH-401</span>
+          <h3>Ethical Hacking</h3>
+          <p>Reconnaissance, vulnerability scanning, penetration testing and network defence in a legal lab environment.</p>
+          <div class="course-meta"><span>3 Months</span><a href="#contact">Enquire →</a></div>
+        </div>
+        <div class="course-card">
+          <span class="course-code">CC-101</span>
+          <h3>Cloud Computing Fundamentals</h3>
+          <p>Core concepts of virtualization, IaaS/PaaS/SaaS, and multi-cloud architecture before specialising further.</p>
+          <div class="course-meta"><span>1.5 Months</span><a href="#contact">Enquire →</a></div>
+        </div>
+        <div class="course-card">
+          <span class="course-code">AWS-SAA</span>
+          <h3>AWS — Amazon Web Services</h3>
+          <p>EC2, S3, VPC, IAM and architecting for the AWS Solutions Architect Associate certification.</p>
+          <div class="course-meta"><span>2.5 Months</span><a href="#contact">Enquire →</a></div>
+        </div>
+        <div class="course-card">
+          <span class="course-code">AZ-104</span>
+          <h3>Microsoft Azure</h3>
+          <p>Azure identity, storage, virtual networks and compute resources, mapped to the AZ-104 exam objectives.</p>
+          <div class="course-meta"><span>2.5 Months</span><a href="#contact">Enquire →</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-tag">/// Gallery</span>
+        <h2>Inside Compshiksha InfoTech</h2>
+        <p>Take a look at our classrooms, networking labs, hardware workshops and student activities.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="images/image-1.jpeg" alt="Networking Lab">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-2.jpeg" alt="Hardware Training">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-3.jpeg" alt="Students in Class">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-4.jpeg" alt="Cloud Computing Session">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-5.jpeg" alt="Computer Hardware Lab">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-6.jpeg" alt="Certification Ceremony">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-7.jpeg" alt="Certification Ceremony">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-8.jpeg" alt="Certification Ceremony">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-9.jpeg" alt="Certification Ceremony">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-10.jpeg" alt="Certification Ceremony">
+        </div>
+        <div class="gallery-item">
+          <img src="images/image-11.jpeg" alt="Certification Ceremony">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section id="why">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-tag">/// Why Compshiksha</span>
+        <h2>Built like a workshop, not a classroom.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <span class="why-num">01</span>
+          <h4>Real hardware labs</h4>
+          <p>Every batch works on physical routers, switches and server racks — not simulators alone.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-num">02</span>
+          <h4>Certified trainers</h4>
+          <p>Instructors hold current CCNA, RHCSA, AWS and Azure certifications and work as consultants.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-num">03</span>
+          <h4>Small batch sizes</h4>
+          <p>Capped at 15 students per batch so every rack and console gets hands-on time.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-num">04</span>
+          <h4>Placement support</h4>
+          <p>Resume reviews, mock interviews and direct referrals to our hiring partner network.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PATH -->
+  <section class="path" id="path">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-tag">/// How a batch runs</span>
+        <h2>From first boot to final certification.</h2>
+      </div>
+      <div class="path-row">
+        <div class="path-time mono">WEEK 1</div>
+        <div class="path-body">
+          <h4>Foundations on the bench</h4>
+          <p>Assemble and diagnose a PC, terminate your first cable, and set up a working LAN by the end of week one.</p>
+        </div>
+      </div>
+      <div class="path-row">
+        <div class="path-time mono">WEEK 3–8</div>
+        <div class="path-body">
+          <h4>Core track training</h4>
+          <p>Deep-dive into your chosen track — CCNA routing labs, RHEL shell administration, or cloud console work — with weekly graded labs.</p>
+        </div>
+      </div>
+      <div class="path-row">
+        <div class="path-time mono">WEEK 9–10</div>
+        <div class="path-body">
+          <h4>Project &amp; mock exam</h4>
+          <p>Build a capstone project mirroring a real deployment, then sit a full-length mock certification exam.</p>
+        </div>
+      </div>
+      <div class="path-row">
+        <div class="path-time mono">WEEK 11+</div>
+        <div class="path-body">
+          <h4>Certification &amp; placement</h4>
+          <p>Sit your official certification exam and move into interview preparation with our placement cell.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAND -->
+  <section style="padding-top:0;">
+    <div class="wrap">
+      <div class="band">
+        <div class="band-cell"><strong>9</strong><span>ACTIVE TRACKS</span></div>
+        <div class="band-cell"><strong>15</strong><span>MAX BATCH SIZE</span></div>
+        <div class="band-cell"><strong>92%</strong><span>PLACEMENT RATE</span></div>
+        <div class="band-cell"><strong>10+</strong><span>YEARS TRAINING</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="cta-box">
+        <div>
+          <span class="section-tag">/// Get Started</span>
+          <h2>Book a free demo class.</h2>
+          <p>Tell us which track you're interested in and a counsellor will call you back within one business day to confirm your seat.</p>
+
+          <div class="contact-info">
+            <div class="ci-item"><span>Visit</span><strong>Alandi Devachi, Pune, Maharashtra 412105</strong></div>
+            <div class="ci-item"><span>Call</span><strong>+91 73875 38045</strong></div>
+            <div class="ci-item"><span>Email</span><strong>vinayak.vaishnav@compshiksha.in</strong></div>
+            <div class="ci-item"><span>Hours</span><strong>Mon–Sat, 9:00 AM – 7:00 PM</strong></div>
+          </div>
+        </div>
+
+        <form id="enquiryForm">
+          <input type="text" id="fName" placeholder="Full name" required>
+          <div class="form-row">
+            <input type="tel" id="fPhone" placeholder="Phone number" required>
+            <input type="email" id="fEmail" placeholder="Email address">
+          </div>
+          <select id="fCourse" required>
+            <option value="" disabled selected>Course you're interested in</option>
+            <option>Computer Hardware &amp; Networking</option>
+            <option>CCNA</option>
+            <option>RHEL</option>
+            <option>CentOS</option>
+            <option>Ubuntu</option>
+            <option>Ethical Hacking</option>
+            <option>Cloud Computing</option>
+            <option>AWS</option>
+            <option>Azure</option>
+          </select>
+          <button type="submit">Send via WhatsApp</button>
+          <p style="font-size:12px;color:var(--muted-2);margin-top:2px;">This opens WhatsApp with your details pre-filled — just hit send there.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="prompt-brand" style="display:inline-flex;margin-bottom:12px;">compshiksha<span class="at">@</span><span class="host">infotech</span></span>
+        <p style="color:var(--muted);font-size:13.5px;max-width:280px;margin-top:8px;">Hardware, networking and cloud training with real labs, in Alandi Devachi, Pune.</p>
+      </div>
+      <div>
+        <h5>Courses</h5>
+        <ul>
+          <li><a href="#courses">Hardware &amp; Networking</a></li>
+          <li><a href="#courses">CCNA</a></li>
+          <li><a href="#courses">RHEL / CentOS / Ubuntu</a></li>
+          <li><a href="#courses">Ethical Hacking</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <ul>
+          <li><a href="it-support.html">IT Support</a></li>
+          <li><a href="it-support.html#services">Device Purchase</a></li>
+          <li><a href="it-support.html#services">Troubleshooting</a></li>
+          <li><a href="it-support.html#services">LAN/WAN Setup</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Institute</h5>
+        <ul>
+          <li><a href="#why">Why Compshiksha</a></li>
+          <li><a href="#path">Learning Path</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 COMPSHIKSHA INFOTECH. ALL RIGHTS RESERVED.</span>
+      <span>ALANDI DEVACHI, PUNE, MAHARASHTRA, INDIA</span>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOATING CHAT -->
+<div class="wa-float">
+  <span class="wa-tooltip">Chat with us on WhatsApp</span>
+  <a class="wa-btn" id="waBtn" aria-label="Chat on WhatsApp" target="_blank" rel="noopener">
+    <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+      <path d="M16.01 3C9.39 3 4.02 8.36 4.02 14.98c0 2.2.59 4.28 1.62 6.06L3 29l8.16-2.58a11.9 11.9 0 0 0 4.85 1.03h.01c6.62 0 11.98-5.36 11.98-11.98C27.99 8.36 22.63 3 16.01 3z" fill="#fff"/>
+      <path d="M16.01 4.6c-5.73 0-10.38 4.65-10.38 10.38 0 1.98.56 3.83 1.53 5.4l.24.38-1.02 3.73 3.83-1.0.37.22a10.3 10.3 0 0 0 5.42 1.53c5.73 0 10.38-4.65 10.38-10.38S21.74 4.6 16.01 4.6z" fill="#25D366"/>
+      <path d="M12.1 9.6c-.24-.53-.5-.54-.73-.55h-.62c-.22 0-.57.08-.87.4-.3.32-1.14 1.12-1.14 2.72 0 1.6 1.17 3.16 1.33 3.37.16.22 2.27 3.64 5.6 4.96 2.78 1.1 3.35.88 3.95.83.6-.06 1.94-.79 2.21-1.56.27-.76.27-1.42.19-1.56-.08-.14-.3-.22-.62-.38-.33-.16-1.94-.96-2.24-1.06-.3-.11-.52-.16-.74.16-.22.32-.85 1.06-1.04 1.28-.19.22-.38.24-.71.08-.33-.16-1.38-.51-2.63-1.62-.97-.87-1.63-1.94-1.82-2.26-.19-.32-.02-.5.14-.66.15-.15.33-.38.5-.57.16-.19.22-.32.33-.54.11-.22.06-.41-.02-.57-.08-.16-.7-1.79-.98-2.45z" fill="#fff"/>
+    </svg>
+  </a>
+</div>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  (function(){
+    var root = document.documentElement;
+    var toggle = document.getElementById('themeToggle');
+    var iconMoon = toggle.querySelector('.icon-moon');
+    var iconSun = toggle.querySelector('.icon-sun');
+
+    function setTheme(isDark){
+      root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      iconMoon.style.display = isDark ? 'none' : 'block';
+      iconSun.style.display = isDark ? 'block' : 'none';
+    }
+    setTheme(false);
+
+    toggle.addEventListener('click', function(){
+      var isDark = root.getAttribute('data-theme') === 'dark';
+      setTheme(!isDark);
+    });
+  })();
+
+  var WA_PHONE = "917387538045";
+
+  (function(){
+    var defaultMessage = "Hi Compshiksha InfoTech! I'm interested in your hardware, networking and cloud courses. Could you share more details?";
+    var url = "https://wa.me/" + WA_PHONE + "?text=" + encodeURIComponent(defaultMessage);
+    document.getElementById('waBtn').setAttribute('href', url);
+  })();
+
+  document.getElementById('enquiryForm').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var name = document.getElementById('fName').value.trim();
+    var phone = document.getElementById('fPhone').value.trim();
+    var email = document.getElementById('fEmail').value.trim();
+    var course = document.getElementById('fCourse').value;
+
+    var lines = [
+      "New enquiry from the Compshiksha InfoTech website:",
+      "Name: " + name,
+      "Phone: " + phone
+    ];
+    if (email) lines.push("Email: " + email);
+    lines.push("Course interested in: " + course);
+
+    var message = lines.join("\n");
+    var url = "https://wa.me/" + WA_PHONE + "?text=" + encodeURIComponent(message);
+    window.open(url, "_blank");
+
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
